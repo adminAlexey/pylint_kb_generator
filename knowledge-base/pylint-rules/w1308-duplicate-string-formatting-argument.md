@@ -1,0 +1,68 @@
+---
+id: pylint-W1308
+rule_code: "W1308"
+rule_name: "duplicate-string-formatting-argument"
+category: "pylint"
+tags: ["python"]
+related: []
+source: "https://pylint.readthedocs.io/en/latest/user_guide/messages/messages_overview.html"
+link: "https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/duplicate-string-formatting-argument.html"
+---
+# duplicate-string-formatting-argument / W1308
+
+**Message emitted:**
+
+`Duplicate string formatting argument %r, consider passing as named argument`
+
+**Description:**
+
+*Used when we detect that a string formatting is repeating an argument instead of using named string arguments*
+
+**Problematic code:**
+
+```
+# pylint: disable=missing-docstring, consider-using-f-string
+
+SEE = "see 👀"
+SEA = "sea 🌊"
+
+# +1: [duplicate-string-formatting-argument,duplicate-string-formatting-argument]
+CONST = """
+A sailor went to {}, {}, {}
+To {} what he could {}, {}, {}
+But all that he could {}, {}, {}
+Was the bottom of the deep blue {}, {}, {}!
+""".format(
+    SEA,
+    SEA,
+    SEA,
+    SEE,
+    SEE,
+    SEE,
+    SEE,
+    SEE,
+    SEE,
+    SEE,
+    SEA,
+    SEA,
+    SEA,
+)
+```
+
+**Correct code:**
+
+```
+# pylint: disable=missing-docstring, consider-using-f-string
+
+SEE = "see 👀"
+SEA = "sea 🌊"
+
+CONST = """
+A sailor went to {sea}, {sea}, {sea}
+To {see} what he could {see}, {see}, {see}
+But all that he could {see}, {see}, {see}
+Was the bottom of the deep blue {sea}, {sea}, {sea}!
+""".format(sea=SEA, see=SEE)
+```
+
+Created by the [string](https://github.com/pylint-dev/pylint/blob/main/pylint/checkers/strings.py) checker.

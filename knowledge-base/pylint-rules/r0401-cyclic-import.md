@@ -1,0 +1,69 @@
+---
+id: pylint-R0401
+rule_code: "R0401"
+rule_name: "cyclic-import"
+category: "pylint"
+tags: ["python"]
+related: []
+source: "https://pylint.readthedocs.io/en/latest/user_guide/messages/messages_overview.html"
+link: "https://pylint.readthedocs.io/en/latest/user_guide/messages/refactor/cyclic-import.html"
+---
+# cyclic-import / R0401
+
+**Message emitted:**
+
+`Cyclic import (%s)`
+
+**Description:**
+
+*Used when a cyclic import between two or more modules is detected.*
+
+**Problematic code:**
+
+`__init__.py`:
+
+```
+
+```
+
+`bad.py`:
+
+```
+def count_to_one():
+    return 1
+
+def count_to_three():
+    from .bad2 import count_to_two
+
+    return count_to_two() + 1
+```
+
+`bad2.py`:
+
+```
+from .bad import count_to_one  # [cyclic-import]
+
+def count_to_two():
+    return count_to_one() + 1
+```
+
+**Correct code:**
+
+```
+def count_to_one():
+    return 1
+
+def count_to_two():
+    return count_to_one() + 1
+
+def count_to_three():
+    return count_to_two() + 1
+```
+
+**Additional details:**
+
+The good code is just an example. There are various strategies to resolving
+cyclic imports and the best choice relies heavily on the context of the code
+and the affected modules.
+
+Created by the [imports](https://github.com/pylint-dev/pylint/blob/main/pylint/checkers/imports.py) checker.

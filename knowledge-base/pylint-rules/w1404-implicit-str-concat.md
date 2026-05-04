@@ -1,0 +1,93 @@
+---
+id: pylint-W1404
+rule_code: "W1404"
+rule_name: "implicit-str-concat"
+category: "pylint"
+tags: ["python"]
+related: []
+source: "https://pylint.readthedocs.io/en/latest/user_guide/messages/messages_overview.html"
+link: "https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/implicit-str-concat.html"
+---
+# implicit-str-concat / W1404
+
+**Message emitted:**
+
+`Implicit string concatenation found in %s`
+
+**Description:**
+
+*String literals are implicitly concatenated in a literal iterable definition : maybe a comma is missing ?*
+
+**Problematic code:**
+
+`list.py`:
+
+```
+x = ["a" "b"]  # [implicit-str-concat]
+```
+
+`open.py`:
+
+```
+with open("hello.txt" "r") as f:  # [implicit-str-concat]
+    print(f.read())
+```
+
+**Correct code:**
+
+`list.py`:
+
+```
+x = ["a", "b"]
+```
+
+`open.py`:
+
+```
+with open("hello.txt", "r") as f:
+    print(f.read())
+```
+
+**Additional details:**
+
+By default, detection of implicit string concatenation of line jumps is disabled.
+Hence the following code will not trigger this rule:
+
+```
+SEQ = ('a', 'b'
+            'c')
+```
+
+In order to detect this case, you must enable check-str-concat-over-line-jumps:
+
+```
+[STRING_CONSTANT]
+check-str-concat-over-line-jumps = true
+```
+
+However, the drawback of this setting is that it will trigger false positive
+for string parameters passed on multiple lines in function calls:
+
+```
+warnings.warn(
+    "rotate() is deprecated and will be removed in a future release. "
+    "Use the rotation() context manager instead.",
+    DeprecationWarning,
+    stacklevel=3,
+)
+```
+
+No message will be emitted, though, if you clarify the wanted concatenation with parentheses:
+
+```
+warnings.warn(
+    (
+        "rotate() is deprecated and will be removed in a future release. "
+        "Use the rotation() context manager instead."
+    ),
+    DeprecationWarning,
+    stacklevel=3,
+)
+```
+
+Created by the [string](https://github.com/pylint-dev/pylint/blob/main/pylint/checkers/strings.py) checker.

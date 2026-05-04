@@ -1,0 +1,10 @@
+[project]
+name = "pylint-knowledge-base"
+version = "0.1.0"
+description = "CLI tool that converts Pylint documentation into structured Markdown cards optimized for RAG knowledge bases."
+requires-python = ">=3.14"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "requests>=2.33.1",
+    "tqdm>=4.67.3",
+]
