@@ -27,5 +27,13 @@ uv sync
 Run the application
 
 ```bash
-python main.py
+uv run main.py
 ```
+
+### ⚙️ CLI Options
+| Flag | Description | Default                                                                              |
+|------|-------------|--------------------------------------------------------------------------------------|
+| `-u, --url` | Documentation URL | `https://pylint.readthedocs.io/en/latest/user_guide/messages/messages_overview.html` |
+| `-o, --output` | Output directory | `knowledge-base/pylint-rules`                                                        |
+| `-f, --force` | Overwrite existing files | `False`                                                                              |
+| `--dry-run` | Parse without saving | `False`                                                                              |
